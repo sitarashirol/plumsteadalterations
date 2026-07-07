@@ -54,7 +54,7 @@ export const services: Service[] = [
     title: 'Hemming',
     description:
       'Shorten pants, jeans, skirts, and dresses to the perfect length — including original-hem finishes on jeans.',
-    fromPrice: '$12',
+    fromPrice: '$15',
   },
   {
     title: 'Sleeve Adjustments',
