@@ -1,21 +1,36 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { business, services, priceHighlights, faqs } from '../site';
-
-const title = `${business.name} | Clothing Alterations in Doylestown & Bucks County, PA`;
-const description =
-  'Affordable, expert clothing alterations in Doylestown & Bucks County, PA. Hemming, sleeve adjustments, taking in & letting out, plus zipper and button repairs. Text for a fast, free quote.';
+import {
+  business,
+  seo,
+  hero,
+  priceHighlights,
+  whyUs,
+  services,
+  sections,
+  about,
+  cta,
+  footer,
+  faqs,
+} from '../site';
 
 const smsLink = `sms:${business.phoneLink}`;
 
 // Friendly grammatical list of the main towns for the intro copy.
 const topTowns = business.areaServed.slice(0, 4).join(', ');
+
+// Fill {locality} / {topTowns} tokens used in some config strings.
+const fill = (s: string) =>
+  s.replaceAll('{locality}', business.locality).replaceAll('{topTowns}', topTowns);
+
+// How a service's price is shown: "from $15", or "Ask for a quote" when open-ended.
+const priceLabel = (p: string | null) => (p ? `from ${p}` : 'Ask for a quote');
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout title={seo.title} description={seo.description}>
   <header class="site-header">
     <div class="container">
-      <a class="brand" href="#top">Doylestown <span>Alterations</span></a>
+      <a class="brand" href="#top">{business.brand.pre} <span>{business.brand.accent}</span></a>
       <nav class="nav" aria-label="Primary">
         <div class="nav-links">
           <a href="#services">Services</a>
@@ -34,46 +49,36 @@ const topTowns = business.areaServed.slice(0, 4).join(', ');
     <section class="hero">
       <div class="container hero-grid">
         <div>
-          <p class="eyebrow">Affordable alterations · Doylestown &amp; Bucks County, PA</p>
-          <h1>Expert alterations at honest, everyday-low prices.</h1>
-          <p class="lead">
-            Friendly, professional alterations from an experienced seamstress
-            serving the Doylestown area. Most everyday jobs are simple, quick, and
-            <strong>start well under $20</strong> — with a clear price before any
-            work begins.
-          </p>
+          <p class="eyebrow">{hero.eyebrow}</p>
+          <h1>{hero.heading}</h1>
+          <p class="lead" set:html={hero.lead} />
 
-          <ul class="price-highlights" aria-label="Starting prices">
-            {
-              priceHighlights.map((h) => (
-                <li class="price-chip">
-                  <span class="pc-label">{h.label}</span>
-                  <span class="pc-price">
-                    from <strong>{h.price}</strong>
-                  </span>
-                </li>
-              ))
-            }
-          </ul>
+          {
+            priceHighlights.length > 0 && (
+              <ul class="price-highlights" aria-label="Starting prices">
+                {priceHighlights.map((h) => (
+                  <li class="price-chip">
+                    <span class="pc-label">{h.label}</span>
+                    <span class="pc-price">
+                      from <strong>{h.price}</strong>
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )
+          }
 
           <div class="btn-row" style="margin-top:1.6rem">
             <a class="btn btn-primary" href={smsLink}>📱 Text {business.phoneDisplay}</a>
             <a class="btn btn-secondary" href="#pricing">See all prices</a>
           </div>
-          <p style="margin-top:1rem;color:var(--ink-soft);font-size:0.95rem">
-            <strong>Text is the best way to reach us.</strong> Send a photo and a
-            quick note about what you need for a fast, free quote.
-          </p>
+          <p style="margin-top:1rem;color:var(--ink-soft);font-size:0.95rem" set:html={hero.contactNote} />
         </div>
 
         <aside class="hero-card">
-          <h3>Why neighbors choose us</h3>
+          <h3>{whyUs.title}</h3>
           <ul class="checklist">
-            <li>Experienced, trained in clothing alterations</li>
-            <li>Honest, low prices — most jobs under $20</li>
-            <li>Quick turnaround — most jobs in a few days</li>
-            <li>Personal, one-on-one service</li>
-            <li>Convenient local drop-off &amp; pick-up</li>
+            {whyUs.points.map((point) => <li>{point}</li>)}
           </ul>
         </aside>
       </div>
@@ -83,12 +88,9 @@ const topTowns = business.areaServed.slice(0, 4).join(', ');
     <section id="services">
       <div class="container">
         <div class="section-head">
-          <p class="eyebrow">What we do</p>
-          <h2>Everyday alterations &amp; repairs</h2>
-          <p class="lead">
-            We focus on the alterations people need most — done well, and done
-            affordably. (We don’t make new garments from scratch.)
-          </p>
+          <p class="eyebrow">{sections.services.eyebrow}</p>
+          <h2>{sections.services.heading}</h2>
+          <p class="lead">{sections.services.lead}</p>
         </div>
         <div class="cards">
           {
@@ -97,7 +99,13 @@ const topTowns = business.areaServed.slice(0, 4).join(', ');
                 <h3>{s.title}</h3>
                 <p>{s.description}</p>
                 <span class="price">
-                  from {s.fromPrice} <small>· final price by quote</small>
+                  {s.fromPrice ? (
+                    <>
+                      from {s.fromPrice} <small>· final price by quote</small>
+                    </>
+                  ) : (
+                    'Ask for a quote'
+                  )}
                 </span>
               </article>
             ))
@@ -110,13 +118,9 @@ const topTowns = business.areaServed.slice(0, 4).join(', ');
     <section id="pricing" class="section-cream-deep">
       <div class="container">
         <div class="section-head">
-          <p class="eyebrow">Simple, fair pricing</p>
-          <h2>Starting prices</h2>
-          <p class="lead">
-            Every garment is a little different, so the prices below are starting
-            points. Text a photo and a quick description for an exact, no-pressure
-            quote.
-          </p>
+          <p class="eyebrow">{sections.pricing.eyebrow}</p>
+          <h2>{sections.pricing.heading}</h2>
+          <p class="lead">{sections.pricing.lead}</p>
         </div>
         <div class="cards">
           {
@@ -124,16 +128,13 @@ const topTowns = business.areaServed.slice(0, 4).join(', ');
               <article class="card">
                 <h3>{s.title}</h3>
                 <span class="price" style="font-size:1.4rem">
-                  from {s.fromPrice}
+                  {priceLabel(s.fromPrice)}
                 </span>
               </article>
             ))
           }
         </div>
-        <p class="pricing-note">
-          Prices vary by garment, fabric, and the work involved. You’ll always
-          get a clear quote before any work begins.
-        </p>
+        <p class="pricing-note">{sections.pricing.note}</p>
       </div>
     </section>
 
@@ -141,43 +142,23 @@ const topTowns = business.areaServed.slice(0, 4).join(', ');
     <section id="about">
       <div class="container about-grid">
         <div>
-          <p class="eyebrow">About</p>
-          <h2>An experienced seamstress, right in your neighborhood</h2>
-          <p>
-            Doylestown Alterations is a home-based alterations service in
-            {business.locality}, Bucks County. After years of experience and a
-            long history of happy customers, our seamstress is now offering that
-            same careful, trained craftsmanship to neighbors across the
-            Doylestown area.
-          </p>
-          <p>
-            Every garment gets personal attention and an honest price. Whether
-            it’s hemming a new pair of pants, taking in a dress for a special
-            occasion, or fixing a stubborn zipper, you can count on quality work
-            and a friendly, neighborly experience.
-          </p>
+          <p class="eyebrow">{about.eyebrow}</p>
+          <h2>{about.heading}</h2>
+          {about.paragraphs.map((p) => <p>{fill(p)}</p>)}
           <div class="stat-row">
-            <div class="stat">
-              <div class="num">Years</div>
-              <div class="label">of alterations experience</div>
-            </div>
-            <div class="stat">
-              <div class="num">Local</div>
-              <div class="label">serving the Doylestown area</div>
-            </div>
-            <div class="stat">
-              <div class="num">Fair</div>
-              <div class="label">competitive pricing</div>
-            </div>
+            {
+              about.stats.map((stat) => (
+                <div class="stat">
+                  <div class="num">{stat.num}</div>
+                  <div class="label">{stat.label}</div>
+                </div>
+              ))
+            }
           </div>
         </div>
         <aside class="hero-card">
-          <h3>Ready when you are</h3>
-          <p style="color:var(--ink-soft)">
-            The easiest way to get started is a quick text. Tell us what you
-            need, attach a photo if you can, and we’ll reply with a price and a
-            time to drop off your garments.
-          </p>
+          <h3>{about.card.title}</h3>
+          <p style="color:var(--ink-soft)">{about.card.body}</p>
           <div class="btn-row" style="margin-top:1rem">
             <a class="btn btn-primary" href={smsLink}>Text us</a>
           </div>
@@ -189,12 +170,9 @@ const topTowns = business.areaServed.slice(0, 4).join(', ');
     <section id="area" class="section-cream-deep">
       <div class="container">
         <div class="section-head">
-          <p class="eyebrow">Where we serve</p>
-          <h2>Proudly serving the Doylestown &amp; Bucks County area</h2>
-          <p class="lead">
-            Based near {business.locality} and serving {topTowns}, and the
-            surrounding communities.
-          </p>
+          <p class="eyebrow">{sections.area.eyebrow}</p>
+          <h2>{sections.area.heading}</h2>
+          <p class="lead">{fill(sections.area.lead)}</p>
         </div>
         <div class="pill-row">
           {business.areaServed.map((town) => <span class="pill">{town}</span>)}
@@ -206,8 +184,8 @@ const topTowns = business.areaServed.slice(0, 4).join(', ');
     <section id="faq">
       <div class="container">
         <div class="section-head">
-          <p class="eyebrow">Good to know</p>
-          <h2>Frequently asked questions</h2>
+          <p class="eyebrow">{sections.faq.eyebrow}</p>
+          <h2>{sections.faq.heading}</h2>
         </div>
         <div class="faq-list">
           {
@@ -225,17 +203,14 @@ const topTowns = business.areaServed.slice(0, 4).join(', ');
     <!-- CTA / CONTACT -->
     <section id="contact" class="cta">
       <div class="container">
-        <p class="eyebrow" style="color:rgba(255,255,255,0.85)">Get a free quote</p>
-        <h2>Let’s get your clothes fitting perfectly.</h2>
-        <p class="lead">
-          Text a photo and a short description of what you need — you’ll get a
-          friendly, no-obligation quote, usually the same day.
-        </p>
+        <p class="eyebrow" style="color:rgba(255,255,255,0.85)">{cta.eyebrow}</p>
+        <h2>{cta.heading}</h2>
+        <p class="lead">{cta.lead}</p>
         <div class="btn-row">
           <a class="btn btn-primary" href={smsLink}>📱 Text {business.phoneDisplay}</a>
         </div>
         <p style="margin-top:1rem;color:rgba(255,255,255,0.85);font-size:0.95rem">
-          Please text rather than call — it’s the fastest way to reach us.
+          {cta.note}
         </p>
       </div>
     </section>
@@ -245,13 +220,11 @@ const topTowns = business.areaServed.slice(0, 4).join(', ');
     <div class="container">
       <div>
         <strong>{business.name}</strong><br />
-        <span class="muted">
-          Serving Doylestown &amp; Bucks County, {business.region}
-        </span>
+        <span class="muted">{footer.tagline}</span>
       </div>
       <div>
         <a href={smsLink}>Text {business.phoneDisplay}</a><br />
-        <span class="muted">By appointment · Local drop-off &amp; pick-up</span>
+        <span class="muted">{footer.note}</span>
       </div>
     </div>
   </footer>

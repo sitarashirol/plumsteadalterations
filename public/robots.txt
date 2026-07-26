@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://doylestownalterations.com/sitemap-index.xml

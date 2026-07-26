@@ -1,18 +1,37 @@
 // =============================================================================
-// EDIT YOUR BUSINESS DETAILS HERE
+// THE ONLY FILE YOU EDIT — all business details & site content live here.
 // =============================================================================
-// This is the single place to change the business name, phone number, services,
-// prices, and service area. Everything on the site reads from this file.
+// This file is the single source of truth for the whole website: the business
+// name, phone number, services, prices, service area, every headline and
+// paragraph, and the deployment settings.
 //
-// NOTE ON PRICES: the "from" prices below are competitive placeholder estimates
-// for the Bucks County area. Please review each one and adjust to match what
-// your mom actually wants to charge before going live.
+// This is *also* the only file that differs between this site and its sister
+// site (Alterations by Raj). Every other file in the two repos is identical, so
+// they stay in sync — to change how the site *looks or works*, edit the shared
+// components; to change what it *says*, edit this file.
+//
+// NOTE ON PRICES: the "from" prices below are competitive placeholder estimates.
+// Please review each one and adjust to what you actually want to charge.
 // =============================================================================
+
+// --- Deployment ---------------------------------------------------------------
+// `site`   full production URL. For a custom domain use the domain; for a
+//          github.io project page use 'https://<user>.github.io'.
+// `base`   sub-path the site is served from. '/' for a custom domain at the
+//          root, or '/<repo-name>' for a github.io project page.
+// `domain` custom domain for GitHub Pages. Leave '' to use the github.io URL.
+//          When set, a CNAME file is generated at build so Pages serves it.
+export const deploy = {
+  site: 'https://doylestownalterations.com',
+  base: '/',
+  domain: 'doylestownalterations.com',
+};
 
 export const business = {
   name: 'Doylestown Alterations',
-  // Short phrase shown under the name / in search results.
-  tagline: 'Affordable Clothing Alterations in Doylestown & Bucks County, PA',
+  // How the name is split in the header/footer logo: `pre` in ink, `accent` in
+  // the plum brand color.
+  brand: { pre: 'Doylestown', accent: 'Alterations' },
 
   // Phone number in two formats: one for links, one for display.
   phoneLink: '+12673345212', // used by text/call links — keep the +1 and no spaces
@@ -24,6 +43,8 @@ export const business = {
   region: 'PA',
   regionName: 'Pennsylvania',
   country: 'US',
+  // Short human label for the area, used in eyebrows/headings.
+  regionLabel: 'Doylestown & Bucks County, PA',
 
   // "$" = inexpensive (good for an affordable positioning). Options: $, $$, $$$.
   priceRange: '$',
@@ -43,10 +64,54 @@ export const business = {
   ],
 };
 
+// --- SEO / social -------------------------------------------------------------
+export const seo = {
+  title:
+    'Doylestown Alterations | Clothing Alterations in Doylestown & Bucks County, PA',
+  description:
+    'Affordable, expert clothing alterations in Doylestown & Bucks County, PA. Hemming, sleeve adjustments, taking in & letting out, plus zipper and button repairs. Text for a fast, free quote.',
+  // Bottom line shown on the social-share (Open Graph) image.
+  ogTagline: 'Affordable clothing alterations & repairs',
+};
+
+// --- Hero ---------------------------------------------------------------------
+// `lead` and `contactNote` may contain simple HTML (e.g. <strong>).
+export const hero = {
+  eyebrow: 'Affordable alterations · Doylestown & Bucks County, PA',
+  heading: 'Expert alterations at honest, everyday-low prices.',
+  lead: 'Friendly, professional alterations from an experienced seamstress serving the Doylestown area. Most everyday jobs are simple, quick, and <strong>start well under $20</strong> — with a clear price before any work begins.',
+  contactNote:
+    '<strong>Text is the best way to reach us.</strong> Send a photo and a quick note about what you need for a fast, free quote.',
+};
+
+// A few headline "from" prices shown right in the hero so the affordable
+// positioning is obvious at a glance. Keep these to the 3–4 most compelling,
+// everyday jobs and make sure they match the prices in `services` below.
+export const priceHighlights: { label: string; price: string }[] = [
+  { label: 'Pant hemming', price: '$15' },
+  { label: 'Zipper & button repairs', price: '$8' },
+  { label: 'Sleeve adjustments', price: '$18' },
+];
+
+// "Why neighbors choose us" card in the hero.
+export const whyUs = {
+  title: 'Why neighbors choose us',
+  points: [
+    'Experienced, trained in clothing alterations',
+    'Honest, low prices — most jobs under $20',
+    'Quick turnaround — most jobs in a few days',
+    'Personal, one-on-one service',
+    'Convenient local drop-off & pick-up',
+  ],
+};
+
+// --- Services -----------------------------------------------------------------
+// Set `fromPrice` to a string like '$15' to show "from $15", or to null to show
+// "Ask for a quote" instead (handy for open-ended jobs like custom curtains).
 export type Service = {
   title: string;
   description: string;
-  fromPrice: string; // e.g. "$12" — shown as "from $12"
+  fromPrice: string | null;
 };
 
 export const services: Service[] = [
@@ -76,15 +141,65 @@ export const services: Service[] = [
   },
 ];
 
-// A few headline "from" prices shown right in the hero so the affordable
-// positioning is obvious at a glance. Keep these to the 3–4 most compelling,
-// everyday jobs and make sure they match the prices in `services` above.
-export const priceHighlights: { label: string; price: string }[] = [
-  { label: 'Pant hemming', price: '$15' },
-  { label: 'Zipper & button repairs', price: '$8' },
-  { label: 'Sleeve adjustments', price: '$18' },
-];
+// --- Section copy -------------------------------------------------------------
+// In `area.lead` you can use the tokens {locality} and {topTowns}; in
+// `about.paragraphs` you can use {locality}. They are filled in automatically.
+export const sections = {
+  services: {
+    eyebrow: 'What we do',
+    heading: 'Everyday alterations & repairs',
+    lead: 'We focus on the alterations people need most — done well, and done affordably. (We don’t make new garments from scratch.)',
+  },
+  pricing: {
+    eyebrow: 'Simple, fair pricing',
+    heading: 'Starting prices',
+    lead: 'Every garment is a little different, so the prices below are starting points. Text a photo and a quick description for an exact, no-pressure quote.',
+    note: 'Prices vary by garment, fabric, and the work involved. You’ll always get a clear quote before any work begins.',
+  },
+  area: {
+    eyebrow: 'Where we serve',
+    heading: 'Proudly serving the Doylestown & Bucks County area',
+    lead: 'Based near {locality} and serving {topTowns}, and the surrounding communities.',
+  },
+  faq: {
+    eyebrow: 'Good to know',
+    heading: 'Frequently asked questions',
+  },
+};
 
+// --- About --------------------------------------------------------------------
+export const about = {
+  eyebrow: 'About',
+  heading: 'An experienced seamstress, right in your neighborhood',
+  paragraphs: [
+    'Doylestown Alterations is a home-based alterations service in {locality}, Bucks County. After years of experience and a long history of happy customers, our seamstress is now offering that same careful, trained craftsmanship to neighbors across the Doylestown area.',
+    'Every garment gets personal attention and an honest price. Whether it’s hemming a new pair of pants, taking in a dress for a special occasion, or fixing a stubborn zipper, you can count on quality work and a friendly, neighborly experience.',
+  ],
+  stats: [
+    { num: 'Years', label: 'of alterations experience' },
+    { num: 'Local', label: 'serving the Doylestown area' },
+    { num: 'Fair', label: 'competitive pricing' },
+  ],
+  card: {
+    title: 'Ready when you are',
+    body: 'The easiest way to get started is a quick text. Tell us what you need, attach a photo if you can, and we’ll reply with a price and a time to drop off your garments.',
+  },
+};
+
+// --- Contact / CTA ------------------------------------------------------------
+export const cta = {
+  eyebrow: 'Get a free quote',
+  heading: 'Let’s get your clothes fitting perfectly.',
+  lead: 'Text a photo and a short description of what you need — you’ll get a friendly, no-obligation quote, usually the same day.',
+  note: 'Please text rather than call — it’s the fastest way to reach us.',
+};
+
+export const footer = {
+  tagline: 'Serving Doylestown & Bucks County, PA',
+  note: 'By appointment · Local drop-off & pick-up',
+};
+
+// --- FAQ ----------------------------------------------------------------------
 export const faqs = [
   {
     q: 'How much do alterations cost?',
