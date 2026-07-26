@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { business, services, faqs } from '../site';
+import { business, services, priceHighlights, faqs } from '../site';
 
 const title = `${business.name} | Clothing Alterations in Doylestown & Bucks County, PA`;
 const description =
@@ -34,16 +34,31 @@ const topTowns = business.areaServed.slice(0, 4).join(', ');
     <section class="hero">
       <div class="container hero-grid">
         <div>
-          <p class="eyebrow">Doylestown &amp; Bucks County, PA</p>
-          <h1>Clothing alterations that fit your life — and your budget.</h1>
+          <p class="eyebrow">Affordable alterations · Doylestown &amp; Bucks County, PA</p>
+          <h1>Expert alterations at honest, everyday-low prices.</h1>
           <p class="lead">
             Friendly, professional alterations from an experienced seamstress
-            serving the Doylestown area. From hems to sleeves to quick repairs,
-            your favorite clothes will fit like they were made for you.
+            serving the Doylestown area. Most everyday jobs are simple, quick, and
+            <strong>start well under $20</strong> — with a clear price before any
+            work begins.
           </p>
+
+          <ul class="price-highlights" aria-label="Starting prices">
+            {
+              priceHighlights.map((h) => (
+                <li class="price-chip">
+                  <span class="pc-label">{h.label}</span>
+                  <span class="pc-price">
+                    from <strong>{h.price}</strong>
+                  </span>
+                </li>
+              ))
+            }
+          </ul>
+
           <div class="btn-row" style="margin-top:1.6rem">
             <a class="btn btn-primary" href={smsLink}>📱 Text {business.phoneDisplay}</a>
-            <a class="btn btn-secondary" href="#services">See services</a>
+            <a class="btn btn-secondary" href="#pricing">See all prices</a>
           </div>
           <p style="margin-top:1rem;color:var(--ink-soft);font-size:0.95rem">
             <strong>Text is the best way to reach us.</strong> Send a photo and a
@@ -55,7 +70,7 @@ const topTowns = business.areaServed.slice(0, 4).join(', ');
           <h3>Why neighbors choose us</h3>
           <ul class="checklist">
             <li>Experienced, trained in clothing alterations</li>
-            <li>Honest, competitive pricing</li>
+            <li>Honest, low prices — most jobs under $20</li>
             <li>Quick turnaround — most jobs in a few days</li>
             <li>Personal, one-on-one service</li>
             <li>Convenient local drop-off &amp; pick-up</li>

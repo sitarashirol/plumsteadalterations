@@ -76,6 +76,15 @@ export const services: Service[] = [
   },
 ];
 
+// A few headline "from" prices shown right in the hero so the affordable
+// positioning is obvious at a glance. Keep these to the 3–4 most compelling,
+// everyday jobs and make sure they match the prices in `services` above.
+export const priceHighlights: { label: string; price: string }[] = [
+  { label: 'Pant hemming', price: '$15' },
+  { label: 'Zipper & button repairs', price: '$8' },
+  { label: 'Sleeve adjustments', price: '$18' },
+];
+
 export const faqs = [
   {
     q: 'How much do alterations cost?',
